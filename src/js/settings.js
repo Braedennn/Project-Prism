@@ -1,11 +1,10 @@
 /**
- * Prism Launcher — Settings Panel
+ * Project Prism — Settings Panel
  * Manages user preferences and settings persistence.
- * Saves to both localStorage (renderer) and main process (for behavior settings).
+ * All settings are persisted via the main process (data/settings.json).
  */
 
 const Settings = (() => {
-  const STORAGE_KEY = 'prism-settings';
   let settings = {
     animations: true,
     reduceMotion: false,
@@ -21,29 +20,13 @@ const Settings = (() => {
     await loadSettings();
     bindEvents();
     applySettings();
-    syncToMain();
   }
 
   async function loadSettings() {
-    // Load from localStorage
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        settings = { ...settings, ...JSON.parse(stored) };
-      }
-    } catch (err) {
-      console.warn('Failed to load settings from localStorage:', err);
-    }
-
-    // Also load from main process (in case localStorage was cleared)
     try {
       const mainSettings = await window.prismAPI.getMainSettings();
       if (mainSettings) {
-        // Main process settings override for behavior keys
-        settings.minToTray = mainSettings.minToTray ?? settings.minToTray;
-        settings.minOnLaunch = mainSettings.minOnLaunch ?? settings.minOnLaunch;
-        settings.confirmRemove = mainSettings.confirmRemove ?? settings.confirmRemove;
-        settings.notifications = mainSettings.notifications ?? settings.notifications;
+        settings = { ...settings, ...mainSettings };
       }
     } catch (err) {
       console.warn('Failed to load settings from main process:', err);
@@ -52,25 +35,9 @@ const Settings = (() => {
 
   function saveSettings() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+      window.prismAPI.setAllSettings({ ...settings });
     } catch (err) {
       console.warn('Failed to save settings:', err);
-    }
-  }
-
-  /**
-   * Sync behavior settings to main process
-   */
-  function syncToMain() {
-    try {
-      window.prismAPI.setAllSettings({
-        minToTray: settings.minToTray,
-        minOnLaunch: settings.minOnLaunch,
-        confirmRemove: settings.confirmRemove,
-        notifications: settings.notifications
-      });
-    } catch (err) {
-      console.warn('Failed to sync settings to main:', err);
     }
   }
 
@@ -81,7 +48,6 @@ const Settings = (() => {
     el.addEventListener('change', () => {
       settings[key] = el.checked;
       saveSettings();
-      syncToMain();
       if (onChange) onChange(el.checked);
     });
   }

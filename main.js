@@ -27,6 +27,10 @@ if (!fs.existsSync(LIBRARY_PATH)) {
 
 // ─── Settings (main process) ─────────────────────────────────────────────────
 let mainSettings = {
+  animations: true,
+  reduceMotion: false,
+  defaultView: 'grid',
+  sortBy: 'name',
   minToTray: false,
   minOnLaunch: false,
   confirmRemove: true,
