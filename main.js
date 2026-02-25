@@ -441,6 +441,16 @@ ipcMain.handle('shell:open-data-dir', async () => {
   }
 });
 
+// ─── IPC: Open External URL ──────────────────────────────────────────────────
+ipcMain.handle('shell:open-external', async (event, url) => {
+  try {
+    await shell.openExternal(url);
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
 // ─── IPC: Shell Open Path ────────────────────────────────────────────────────
 ipcMain.handle('shell:open-path', async (event, targetPath) => {
   try {

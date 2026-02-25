@@ -109,6 +109,25 @@
   color: var(--text-primary);
 }
 
+/* Donate button */
+.sidebar__btn--donate {
+  color: var(--text-muted);
+}
+
+.sidebar__btn--donate img {
+  opacity: 0.3;
+}
+
+.sidebar__btn--donate:hover {
+  color: #f472b6;
+  background: rgba(244, 114, 182, 0.06);
+}
+
+.sidebar__btn--donate:hover img {
+  opacity: 0.9;
+  filter: brightness(0) saturate(100%) invert(62%) sepia(60%) saturate(500%) hue-rotate(290deg) brightness(105%);
+}
+
 .sidebar__actions {
   padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-md);
 }

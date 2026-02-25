@@ -31,6 +31,7 @@ contextBridge.exposeInMainWorld('prismAPI', {
   // Shell
   openPath: (targetPath) => ipcRenderer.invoke('shell:open-path', targetPath),
   openDataDir: () => ipcRenderer.invoke('shell:open-data-dir'),
+  openExternal: (url) => ipcRenderer.invoke('shell:open-external', url),
 
   // Settings sync with main process
   setSetting: (key, value) => ipcRenderer.invoke('settings:set', key, value),

@@ -26,6 +26,11 @@ const App = (() => {
     // Set up add game buttons
     setupAddGameButtons();
 
+    // Donate button
+    Utils.$('#btnDonate').addEventListener('click', () => {
+      window.prismAPI.openExternal('https://buymeacoffee.com/TotallyNoire');
+    });
+
     // Load library data
     await loadLibrary();
 
