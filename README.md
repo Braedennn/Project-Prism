@@ -30,7 +30,9 @@
 
 ## Screenshots
 
-*Coming soon*
+<p align="center">
+  <img src="src/assets/images/screenshot.png" alt="Prism Launcher Screenshot" width="900" />
+</p>
 
 ## Installation
 
