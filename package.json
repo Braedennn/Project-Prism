@@ -1,0 +1,65 @@
+{
+  "name": "prism-launcher",
+  "version": "1.0.0",
+  "productName": "Prism Launcher",
+  "description": "Prism — A high-performance game launcher with Void-Tech aesthetics",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder --win portable",
+    "build:install": "electron-builder --win nsis"
+  },
+  "author": "Prism",
+  "license": "MIT",
+  "build": {
+    "appId": "com.prism.launcher",
+    "productName": "Prism Launcher",
+    "win": {
+      "icon": "src/assets/icons/icon.ico",
+      "target": [
+        "portable",
+        "nsis"
+      ]
+    },
+    "portable": {
+      "artifactName": "Prism Launcher.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "src/assets/icons/icon.ico",
+      "uninstallerIcon": "src/assets/icons/icon.ico",
+      "installerHeaderIcon": "src/assets/icons/icon.ico",
+      "artifactName": "Prism Launcher Setup.exe",
+      "shortcutName": "Prism Launcher",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "data/**/*",
+      "extracted-icons/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "data",
+        "to": "data"
+      }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1",
+    "rcedit": "^5.0.2"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  }
+}

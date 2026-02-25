@@ -1,0 +1,184 @@
+The Architectural Blueprint: "Project Prism"
+1. Technology Stack Recommendation
+To achieve Riot-level animations and a "Blue/Purple/Black" aesthetic without the lag of traditional desktop apps, tell Claude to use:
+
+Framework: Tauri (Rust backend for speed, HTML/CSS/JS frontend for design). It is significantly lighter and faster than Electron.
+
+Frontend Library: React or Vue 3 with Tailwind CSS.
+
+Animation Engine: Framer Motion (essential for those "Riot-style" elastic transitions and hover effects).
+
+Icon Extraction: Python (pefile/Pillow) or a Node.js native module like extract-file-icon.
+
+2. Design System & Aesthetics
+Color Palette (The "Void-Tech" Theme):
+
+Primary (Black): #020617 (Deep Midnight)
+
+Secondary (Purple): #7c3aed (Electric Violet)
+
+Accent (Blue): #0ea5e9 (Sky Blue)
+
+Glass Effect: Background blur (backdrop-filter: blur(12px)) with rgba(15, 23, 42, 0.75) overlays.
+
+Animation Specifications:
+
+Entry: Soft fade-in with a slight "scale-up" (0.95 to 1.0).
+
+Hover (Game Tiles): 3D Tilt effect using framer-motion and a glowing purple border that "pulses."
+
+The "Play" Button: A gradient shift animation on hover (Blue to Purple) with a ripple effect on click.
+
+3. Core Logic Modules (The "No-Sloppy" Rules)
+A. The File Scanner & Icon Extractor
+The launcher must handle the "Add Game" logic gracefully.
+
+Requirement: When a user selects an .exe, the system must not just link it, but cache the icon.
+
+Logic:
+
+User selects file via a system dialog.
+
+Backend (Rust/Node) extracts the HICON resource.
+
+Convert the icon to a Base64 string or save it as a .png in an assets/cache/ folder.
+
+No-Sloppy Rule: If an icon cannot be found, generate a "Fallback Tile" using the first letter of the game's name over a purple gradient.
+
+B. State Management
+Storage: Use a local JSON database (like lowdb) or a simple SQLite file to store game paths, names, and custom icons.
+
+Persistence: Ensure the launcher remembers the "Last Played" game to feature it on the main dashboard.
+
+"Act as a Senior Software Engineer specializing in Desktop UI/UX. Build a high-performance Game Launcher titled 'Prism' using Tauri and React.
+
+Design Requirements: > - Use a 'Void-Tech' aesthetic: Deep black backgrounds, neon purple accents, and sky-blue highlights.
+
+Implement a sidebar for navigation and a main grid for game tiles.
+
+Game tiles must use Framer Motion for a 1.05x scale hover effect with a purple 'Glow' drop-shadow.
+
+The 'Play' button should be a large, centered action button with a linear gradient (Blue to Purple).
+
+Functional Requirements:
+
+Implement an 'Add Game' function that opens a system file picker.
+
+Write a robust utility to extract the .ico from any chosen .exe and save it as a high-quality .png for the UI.
+
+Ensure all game data (path, title, icon_path) is persisted in a local JSON file.
+
+Code Quality: Use TypeScript. Do not provide a single-file 'spaghetti' solution. Separate the UI components, the file system logic, and the state management. Use clean, documented functions."
+
+Project Structure — CREATE EVERY FILE
+
+project prism/
+├── package.json
+├── electron-builder.yml
+├── main.js                          # Electron main process
+├── preload.js                       # Secure bridge between main & renderer
+├── src/
+│   ├── index.html                   # Single page application shell
+│   ├── css/
+│   │   ├── reset.css                # CSS reset / normalize
+│   │   ├── variables.css            # All CSS custom properties
+│   │   ├── layout.css               # Grid, flexbox, page structure
+│   │   ├── sidebar.css              # Sidebar navigation styles
+│   │   ├── library.css              # Game card grid styles
+│   │   ├── game-detail.css          # Game detail/hero view
+│   │   ├── modal.css                # Add-game modal styles
+│   │   ├── animations.css           # All keyframes and transitions
+│   │   ├── scrollbar.css            # Custom scrollbar styles
+│   │   └── tooltips.css             # Tooltip styles
+│   ├── js/
+│   │   ├── app.js                   # App initialization and routing
+│   │   ├── library-manager.js       # CRUD operations for game library
+│   │   ├── game-card.js             # Game card component rendering
+│   │   ├── game-detail-view.js      # Detail/hero view rendering
+│   │   ├── modal-controller.js      # Modal open/close/validation
+│   │   ├── icon-extractor.js        # Handles icon extraction from EXE
+│   │   ├── animation-engine.js      # Controls all animations/transitions
+│   │   ├── context-menu.js          # Right-click context menu on cards
+│   │   ├── search.js                # Search/filter functionality
+│   │   ├── settings.js              # Settings panel logic
+│   │   ├── notifications.js         # Toast notification system
+│   │   └── utils.js                 # Helper functions
+│   └── assets/
+│       ├── fonts/
+│       │   └── (Inter font files — woff2)
+│       ├── icons/
+│       │   ├── logo.svg             # Nexus launcher logo
+│       │   ├── add.svg
+│       │   ├── search.svg
+│       │   ├── settings.svg
+│       │   ├── play.svg
+│       │   ├── folder.svg
+│       │   ├── trash.svg
+│       │   ├── edit.svg
+│       │   ├── close.svg
+│       │   ├── minimize.svg
+│       │   ├── maximize.svg
+│       │   ├── grid-view.svg
+│       │   └── list-view.svg
+│       └── images/
+│           ├── default-cover.png    # Fallback game cover
+│           ├── hero-bg-particles.png
+│           └── noise-texture.png    # Subtle noise overlay
+├── data/
+│   └── games-library.json           # Persisted game data
+└── extracted-icons/                  # Where extracted EXE icons are saved
+
+Framework:        Electron (latest stable)
+Frontend:         HTML5 + CSS3 + Vanilla JavaScript (NO frameworks — full control)
+Backend/Main:     Node.js (Electron main process)
+Data Storage:     Local JSON file (games-library.json)
+Icon Extraction:  exe-icon-extractor / regedit / sharp / png-js
+Packaging:        electron-builder
+
+Electron Main Process — FULL SPECIFICATION
+Window properties:
+  - Width: 1280, Height: 800, minWidth: 1024, minHeight: 700
+  - frameless: true (custom title bar)
+  - transparent: false
+  - backgroundColor: '#0a0a0f'
+  - webPreferences:
+      - preload: preload.js
+      - contextIsolation: true
+      - nodeIntegration: false
+      - sandbox: false (needed for icon extraction)
+
+IPC Channels to implement:
+  1. 'dialog:open-file'       → Opens native file picker filtered to .exe files
+  2. 'icon:extract'           → Extracts icon from given EXE path, saves as PNG, returns path
+  3. 'library:load'           → Reads and returns games-library.json
+  4. 'library:save'           → Writes updated library data to games-library.json
+  5. 'game:launch'            → Spawns child process to run selected EXE
+  6. 'app:minimize'           → Minimizes window
+  7. 'app:maximize'           → Toggles maximize/restore
+  8. 'app:close'              → Closes application
+  9. 'shell:open-path'        → Opens file explorer at given directory
+  10. 'app:get-version'       → Returns app version from package.json
+
+Icon Extraction Logic (CRITICAL — IMPLEMENT FULLY)
+When user adds a game:
+  1. User selects an .exe file via native dialog
+  2. Main process receives the EXE path
+  3. Use the 'exe-icon-extractor' npm package (or 'icon-extractor' or 'extract-file-icon')
+     - Extract the largest available icon from the EXE
+     - Convert to PNG using 'sharp' if needed
+     - Save to: extracted-icons/{gameId}.png
+     - If extraction fails, try alternative: use 'regedit' to find associated icon
+     - If all extraction fails: use default-cover.png
+  4. Return the saved icon path to renderer
+
+FALLBACK CHAIN:
+  Attempt 1: exe-icon-extractor
+  Attempt 2: PowerShell script to extract via .NET System.Drawing
+  Attempt 3: Use app's default-cover.png
+
+THE POWERSHELL FALLBACK (implement as string in main.js):
+  Add-Type -AssemblyName System.Drawing
+  $icon = [System.Drawing.Icon]::ExtractAssociatedIcon("EXE_PATH")
+  $bitmap = $icon.ToBitmap()
+  $bitmap.Save("OUTPUT_PATH", [System.Drawing.Imaging.ImageFormat]::Png)
+

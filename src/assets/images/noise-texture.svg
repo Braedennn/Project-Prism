@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <!-- Primary noise layer - fine grain -->
+    <filter id="noise-fine" x="0" y="0" width="100%" height="100%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.65"
+        numOctaves="4"
+        seed="15"
+        stitchTiles="stitch"
+        result="noise"/>
+      <feColorMatrix
+        type="saturate"
+        values="0"
+        in="noise"
+        result="grayNoise"/>
+      <feComponentTransfer in="grayNoise" result="adjustedNoise">
+        <feFuncA type="linear" slope="0.08" intercept="0"/>
+      </feComponentTransfer>
+    </filter>
+
+    <!-- Secondary noise layer - coarser grain for depth -->
+    <filter id="noise-coarse" x="0" y="0" width="100%" height="100%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.3"
+        numOctaves="3"
+        seed="42"
+        stitchTiles="stitch"
+        result="noise2"/>
+      <feColorMatrix
+        type="saturate"
+        values="0"
+        in="noise2"
+        result="grayNoise2"/>
+      <feComponentTransfer in="grayNoise2" result="adjustedNoise2">
+        <feFuncA type="linear" slope="0.04" intercept="0"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+
+  <!-- Transparent base -->
+  <rect width="512" height="512" fill="transparent"/>
+
+  <!-- Fine noise layer -->
+  <rect width="512" height="512" fill="white" filter="url(#noise-fine)"/>
+
+  <!-- Coarse noise layer for additional texture depth -->
+  <rect width="512" height="512" fill="white" filter="url(#noise-coarse)"/>
+</svg>

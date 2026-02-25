@@ -1,0 +1,8 @@
+node_modules/
+dist/
+extracted-icons/
+data/
+.claude/
+nul
+*.blockmap
+builder-debug.yml

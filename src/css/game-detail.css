@@ -1,0 +1,199 @@
+/* ─── Game Detail View (Flat Dark) ───────────────────────────────────────── */
+
+.game-detail {
+  animation: fadeIn var(--transition-base);
+}
+
+.game-detail__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-2xl);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  background: none;
+  border: none;
+}
+
+.game-detail__back:hover {
+  color: var(--text-primary);
+}
+
+.game-detail__back img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.4;
+  transform: rotate(180deg);
+}
+
+/* ── Hero Banner ──────────────────────────────────────────────── */
+.game-detail__hero {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+}
+
+.game-detail__hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(24px) brightness(0.25) saturate(0.5);
+  transform: scale(1.15);
+}
+
+.game-detail__hero-fallback {
+  width: 100%;
+  height: 100%;
+  background: var(--color-surface-1);
+}
+
+.game-detail__hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, var(--color-surface-0) 0%, transparent 55%, rgba(17, 17, 17, 0.5) 100%);
+}
+
+/* ── Content ──────────────────────────────────────────────────── */
+.game-detail__content {
+  position: relative;
+  margin-top: -120px;
+  padding: 0 var(--spacing-2xl) var(--spacing-xl);
+  z-index: 4;
+  display: flex;
+  gap: var(--spacing-xl);
+}
+
+.game-detail__icon-wrapper {
+  flex-shrink: 0;
+}
+
+.game-detail__icon {
+  width: 140px;
+  height: 180px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  box-shadow: var(--shadow-lg);
+  background: var(--color-surface-3);
+}
+
+.game-detail__icon-fallback {
+  width: 140px;
+  height: 180px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-3);
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  box-shadow: var(--shadow-lg);
+  font-size: 52px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.15);
+}
+
+.game-detail__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: var(--spacing-sm);
+  min-width: 0;
+}
+
+.game-detail__title {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+  line-height: 1.1;
+  word-break: break-word;
+}
+
+.game-detail__path {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: 'Consolas', 'Courier New', monospace;
+  margin-bottom: var(--spacing-lg);
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+.game-detail__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.game-detail__play-btn {
+  padding: 12px var(--spacing-2xl);
+}
+
+.game-detail__action-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.game-detail__action-btn img {
+  width: 16px;
+  height: 16px;
+  opacity: 0.4;
+}
+
+.game-detail__action-btn:hover {
+  background: var(--color-surface-4);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.game-detail__action-btn:hover img {
+  opacity: 0.85;
+}
+
+.game-detail__action-btn--danger:hover {
+  background: rgba(200, 40, 40, 0.1);
+  border-color: rgba(200, 40, 40, 0.2);
+}
+
+/* ── Stats Row ────────────────────────────────────────────────── */
+.game-detail__stats {
+  display: flex;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  margin-top: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.game-detail__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.game-detail__stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.game-detail__stat-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}

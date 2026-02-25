@@ -1,0 +1,56 @@
+appId: com.prism.launcher
+productName: Prism
+copyright: Copyright © 2024 Prism
+
+directories:
+  output: dist
+  buildResources: build
+
+files:
+  - main.js
+  - preload.js
+  - src/**/*
+  - data/**/*
+  - extracted-icons/**/*
+  - package.json
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: src/assets/icons/logo.svg
+  artifactName: "${productName}-Setup-${version}.${ext}"
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false
+  installerIcon: src/assets/icons/logo.svg
+  uninstallerIcon: src/assets/icons/logo.svg
+
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+  category: public.app-category.games
+
+linux:
+  target:
+    - target: AppImage
+      arch:
+        - x64
+  category: Game
+
+extraResources:
+  - from: data/
+    to: data/
+    filter:
+      - "**/*"
+  - from: extracted-icons/
+    to: extracted-icons/
+    filter:
+      - "**/*"

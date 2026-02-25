@@ -1,0 +1,35 @@
+/* ─── Custom Scrollbar (Flat Dark) ───────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-4);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-surface-5);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: var(--text-muted);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 3px;
+}
+
+.content {
+  scrollbar-gutter: stable;
+}

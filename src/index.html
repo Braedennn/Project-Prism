@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: file:; font-src 'self';" />
+  <title>Prism</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/scrollbar.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/library.css" />
+  <link rel="stylesheet" href="css/game-detail.css" />
+  <link rel="stylesheet" href="css/modal.css" />
+  <link rel="stylesheet" href="css/tooltips.css" />
+</head>
+<body>
+  <!-- ─── Custom Title Bar ──────────────────────────────────────────── -->
+  <header class="title-bar" id="titleBar">
+    <div class="title-bar__drag-region">
+      <div class="title-bar__logo">
+        <img src="assets/icons/logo.svg" alt="Prism" class="title-bar__logo-icon" />
+        <span class="title-bar__title">PRISM</span>
+      </div>
+    </div>
+    <div class="title-bar__controls">
+      <button class="title-bar__btn" id="btnMinimize" aria-label="Minimize">
+        <img src="assets/icons/minimize.svg" alt="" />
+      </button>
+      <button class="title-bar__btn" id="btnMaximize" aria-label="Maximize">
+        <img src="assets/icons/maximize.svg" alt="" />
+      </button>
+      <button class="title-bar__btn title-bar__btn--close" id="btnClose" aria-label="Close">
+        <img src="assets/icons/close.svg" alt="" />
+      </button>
+    </div>
+  </header>
+
+  <!-- ─── Main Layout ───────────────────────────────────────────────── -->
+  <div class="app-layout">
+    <!-- ─── Sidebar ───────────────────────────────────────────────── -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar__nav">
+        <span class="sidebar__section-label">BROWSE</span>
+        <button class="sidebar__btn sidebar__btn--active" data-view="library" data-tooltip="Library">
+          <img src="assets/icons/grid-view.svg" alt="" />
+          <span>Library</span>
+        </button>
+        <button class="sidebar__btn" data-view="recent" data-tooltip="Recent">
+          <img src="assets/icons/clock.svg" alt="" />
+          <span>Recently Played</span>
+        </button>
+        <button class="sidebar__btn" data-view="favorites" data-tooltip="Favorites">
+          <img src="assets/icons/star.svg" alt="" />
+          <span>Favorites</span>
+        </button>
+
+        <span class="sidebar__section-label">TOOLS</span>
+        <button class="sidebar__btn" data-view="statistics" data-tooltip="Statistics">
+          <img src="assets/icons/chart.svg" alt="" />
+          <span>Statistics</span>
+        </button>
+        <button class="sidebar__btn" data-view="settings" data-tooltip="Settings">
+          <img src="assets/icons/settings.svg" alt="" />
+          <span>Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar__actions">
+        <button class="sidebar__btn sidebar__btn--accent" id="btnAddGame" data-tooltip="Add Game">
+          <img src="assets/icons/add.svg" alt="" />
+          <span>Add Game</span>
+        </button>
+      </div>
+
+      <div class="sidebar__footer">
+        <span class="sidebar__version" id="appVersion">v1.0.0</span>
+      </div>
+    </aside>
+
+    <!-- ─── Content Area ──────────────────────────────────────────── -->
+    <main class="content" id="content">
+      <!-- ─── Library View ────────────────────────────────────────── -->
+      <section class="view view--active" id="viewLibrary">
+        <!-- Hero / Last Played -->
+        <div class="hero" id="heroSection">
+          <div class="hero__overlay"></div>
+          <div class="hero__content">
+            <h2 class="hero__label">LAST PLAYED</h2>
+            <h1 class="hero__title" id="heroTitle">No games yet</h1>
+            <p class="hero__subtitle" id="heroSubtitle">Add your first game to get started</p>
+            <button class="btn btn--play hero__play-btn" id="heroPlayBtn" style="display:none;">
+              <img src="assets/icons/play.svg" alt="" />
+              <span>PLAY</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar" id="toolbar">
+          <div class="toolbar__search">
+            <img src="assets/icons/search.svg" alt="" class="toolbar__search-icon" />
+            <input type="text" class="toolbar__search-input" id="searchInput" placeholder="Search games..." />
+          </div>
+          <div class="toolbar__view-toggles">
+            <button class="toolbar__view-btn toolbar__view-btn--active" data-layout="grid" aria-label="Grid view">
+              <img src="assets/icons/grid-view.svg" alt="" />
+            </button>
+            <button class="toolbar__view-btn" data-layout="list" aria-label="List view">
+              <img src="assets/icons/list-view.svg" alt="" />
+            </button>
+          </div>
+        </div>
+
+        <!-- Game Grid -->
+        <div class="game-grid" id="gameGrid">
+          <!-- Game cards injected here -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState">
+          <div class="empty-state__icon">
+            <img src="assets/icons/add.svg" alt="" />
+          </div>
+          <h3 class="empty-state__title">Your library is empty</h3>
+          <p class="empty-state__text">Click "Add Game" to start building your collection</p>
+          <button class="btn btn--primary empty-state__btn" id="emptyAddBtn">
+            <img src="assets/icons/add.svg" alt="" />
+            <span>Add Your First Game</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ─── Game Detail View ────────────────────────────────────── -->
+      <section class="view" id="viewGameDetail">
+        <div class="game-detail" id="gameDetail">
+          <!-- Populated dynamically by game-detail-view.js -->
+        </div>
+      </section>
+
+      <!-- ─── Recently Played View ──────────────────────────────────── -->
+      <section class="view" id="viewRecent">
+        <div class="view-panel">
+          <div class="view-panel__header">
+            <h2 class="view-panel__title">Recently Played</h2>
+            <p class="view-panel__subtitle">Your latest gaming sessions</p>
+          </div>
+          <div class="game-grid" id="recentGrid">
+            <!-- Populated by JS -->
+          </div>
+          <div class="view-panel__empty" id="recentEmpty" style="display:none;">
+            <p>No recently played games yet. Launch a game to see it here.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Favorites View ────────────────────────────────────────── -->
+      <section class="view" id="viewFavorites">
+        <div class="view-panel">
+          <div class="view-panel__header">
+            <h2 class="view-panel__title">Favorites</h2>
+            <p class="view-panel__subtitle">Your starred games for quick access</p>
+          </div>
+          <div class="game-grid" id="favoritesGrid">
+            <!-- Populated by JS -->
+          </div>
+          <div class="view-panel__empty" id="favoritesEmpty" style="display:none;">
+            <p>No favorites yet. Right-click a game and select "Add to Favorites" to pin it here.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Statistics View ───────────────────────────────────────── -->
+      <section class="view" id="viewStatistics">
+        <div class="view-panel">
+          <div class="view-panel__header">
+            <h2 class="view-panel__title">Statistics</h2>
+            <p class="view-panel__subtitle">Your gaming activity overview</p>
+          </div>
+          <div class="stats-overview" id="statsOverview">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Settings View ───────────────────────────────────────── -->
+      <section class="view" id="viewSettings">
+        <div class="settings-panel" id="settingsPanel">
+          <h2 class="settings-panel__title">Settings</h2>
+          <div class="settings-panel__group">
+            <h3 class="settings-panel__group-title">Appearance</h3>
+            <div class="settings-panel__option">
+              <div class="settings-panel__option-info">
+                <label class="settings-panel__label">Enable animations</label>
+                <span class="settings-panel__hint">Card hover effects and transitions</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="settingAnimations" checked />
+                <span class="toggle__slider"></span>
+              </label>
+            </div>
+            <div class="settings-panel__option">
+              <div class="settings-panel__option-info">
+                <label class="settings-panel__label">Reduce motion</label>
+                <span class="settings-panel__hint">Disable all motion for accessibility</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="settingReduceMotion" />
+                <span class="toggle__slider"></span>
+              </label>
+            </div>
+          </div>
+          <div class="settings-panel__group">
+            <h3 class="settings-panel__group-title">Behavior</h3>
+            <div class="settings-panel__option">
+              <div class="settings-panel__option-info">
+                <label class="settings-panel__label">Minimize to tray on close</label>
+                <span class="settings-panel__hint">Keep Prism running in the background</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="settingMinToTray" />
+                <span class="toggle__slider"></span>
+              </label>
+            </div>
+            <div class="settings-panel__option">
+              <div class="settings-panel__option-info">
+                <label class="settings-panel__label">Minimize on game launch</label>
+                <span class="settings-panel__hint">Automatically minimize when starting a game</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="settingMinOnLaunch" />
+                <span class="toggle__slider"></span>
+              </label>
+            </div>
+            <div class="settings-panel__option">
+              <div class="settings-panel__option-info">
+                <label class="settings-panel__label">Confirm before removing</label>
+                <span class="settings-panel__hint">Show a confirmation when deleting games</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="settingConfirmRemove" checked />
+                <span class="toggle__slider"></span>
+              </label>
+            </div>
+            <div class="settings-panel__option">
+              <div class="settings-panel__option-info">
+                <label class="settings-panel__label">Desktop notifications</label>
+                <span class="settings-panel__hint">Notify when a game session ends</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="settingNotifications" checked />
+                <span class="toggle__slider"></span>
+              </label>
+            </div>
+          </div>
+          <div class="settings-panel__group">
+            <h3 class="settings-panel__group-title">Library</h3>
+            <div class="settings-panel__option">
+              <div class="settings-panel__option-info">
+                <label class="settings-panel__label">Default view</label>
+                <span class="settings-panel__hint">Layout when opening the library</span>
+              </div>
+              <select class="settings-panel__select" id="settingDefaultView">
+                <option value="grid">Grid</option>
+                <option value="list">List</option>
+              </select>
+            </div>
+            <div class="settings-panel__option">
+              <div class="settings-panel__option-info">
+                <label class="settings-panel__label">Sort games by</label>
+                <span class="settings-panel__hint">Default sort order in library</span>
+              </div>
+              <select class="settings-panel__select" id="settingSortBy">
+                <option value="name">Name</option>
+                <option value="recent">Recently Played</option>
+                <option value="playtime">Most Played</option>
+                <option value="added">Date Added</option>
+              </select>
+            </div>
+          </div>
+          <div class="settings-panel__group">
+            <h3 class="settings-panel__group-title">Data</h3>
+            <div class="settings-panel__option">
+              <div class="settings-panel__option-info">
+                <label class="settings-panel__label">Library data location</label>
+                <span class="settings-panel__hint">Where your game data is stored</span>
+              </div>
+              <button class="btn btn--ghost" id="btnOpenDataDir">
+                <img src="assets/icons/folder.svg" alt="" />
+                <span>Open Folder</span>
+              </button>
+            </div>
+          </div>
+          <div class="settings-panel__group">
+            <h3 class="settings-panel__group-title">About</h3>
+            <div class="about">
+              <div class="about__header">
+                <img src="assets/icons/logo.svg" alt="Prism" class="about__logo" />
+                <div class="about__header-text">
+                  <h4 class="about__name">Prism Launcher</h4>
+                  <span class="about__version" id="settingsVersion">v1.0.0</span>
+                </div>
+              </div>
+              <p class="about__desc">A lightweight, high-performance game launcher built for organizing and launching your PC game library. Designed with a focus on speed, simplicity, and a clean interface.</p>
+              <div class="about__details">
+                <div class="about__detail">
+                  <span class="about__detail-label">Platform</span>
+                  <span class="about__detail-value">Electron</span>
+                </div>
+                <div class="about__detail">
+                  <span class="about__detail-label">Runtime</span>
+                  <span class="about__detail-value">Chromium + Node.js</span>
+                </div>
+                <div class="about__detail">
+                  <span class="about__detail-label">License</span>
+                  <span class="about__detail-value">MIT</span>
+                </div>
+              </div>
+              <p class="about__copy">&copy; 2026 Prism Project. All rights reserved.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ─── Add Game Modal ────────────────────────────────────────────── -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="addGameModal">
+      <div class="modal__header">
+        <h2 class="modal__title">Add Game</h2>
+        <button class="modal__close" id="modalClose" aria-label="Close modal">
+          <img src="assets/icons/close.svg" alt="" />
+        </button>
+      </div>
+      <div class="modal__body">
+        <div class="modal__field">
+          <label class="modal__label" for="gameTitle">Game Title</label>
+          <input type="text" class="modal__input" id="gameTitle" placeholder="Enter game title..." />
+        </div>
+        <div class="modal__field">
+          <label class="modal__label">Executable</label>
+          <div class="modal__file-picker">
+            <input type="text" class="modal__input modal__input--path" id="gamePath" placeholder="Select .exe file..." readonly />
+            <button class="btn btn--ghost" id="btnBrowseExe">
+              <img src="assets/icons/folder.svg" alt="" />
+              <span>Browse</span>
+            </button>
+          </div>
+        </div>
+        <div class="modal__field">
+          <label class="modal__label">Icon Preview</label>
+          <div class="modal__icon-preview" id="iconPreview">
+            <span class="modal__icon-placeholder">No icon</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--ghost" id="modalCancel">Cancel</button>
+        <button class="btn btn--primary" id="modalConfirm" disabled>Add Game</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Edit Game Modal ───────────────────────────────────────────── -->
+  <div class="modal-overlay" id="editModalOverlay">
+    <div class="modal" id="editGameModal">
+      <div class="modal__header">
+        <h2 class="modal__title">Edit Game</h2>
+        <button class="modal__close" id="editModalClose" aria-label="Close modal">
+          <img src="assets/icons/close.svg" alt="" />
+        </button>
+      </div>
+      <div class="modal__body">
+        <div class="modal__field">
+          <label class="modal__label" for="editGameTitle">Game Title</label>
+          <input type="text" class="modal__input" id="editGameTitle" placeholder="Enter game title..." />
+        </div>
+        <div class="modal__field">
+          <label class="modal__label">Executable</label>
+          <div class="modal__file-picker">
+            <input type="text" class="modal__input modal__input--path" id="editGamePath" placeholder="Select .exe file..." readonly />
+            <button class="btn btn--ghost" id="editBtnBrowseExe">
+              <img src="assets/icons/folder.svg" alt="" />
+              <span>Browse</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--ghost" id="editModalCancel">Cancel</button>
+        <button class="btn btn--primary" id="editModalConfirm">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Context Menu ──────────────────────────────────────────────── -->
+  <div class="context-menu" id="contextMenu">
+    <button class="context-menu__item" data-action="play">
+      <img src="assets/icons/play.svg" alt="" />
+      <span>Play</span>
+    </button>
+    <button class="context-menu__item" data-action="detail">
+      <img src="assets/icons/search.svg" alt="" />
+      <span>View Details</span>
+    </button>
+    <button class="context-menu__item" data-action="favorite">
+      <img src="assets/icons/star.svg" alt="" />
+      <span id="ctxFavoriteLabel">Add to Favorites</span>
+    </button>
+    <button class="context-menu__item" data-action="edit">
+      <img src="assets/icons/edit.svg" alt="" />
+      <span>Edit</span>
+    </button>
+    <button class="context-menu__item" data-action="open-location">
+      <img src="assets/icons/folder.svg" alt="" />
+      <span>Open File Location</span>
+    </button>
+    <div class="context-menu__divider"></div>
+    <button class="context-menu__item context-menu__item--danger" data-action="remove">
+      <img src="assets/icons/trash.svg" alt="" />
+      <span>Remove</span>
+    </button>
+  </div>
+
+  <!-- ─── Toast Container ───────────────────────────────────────────── -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ─── Scripts ───────────────────────────────────────────────────── -->
+  <script src="js/utils.js"></script>
+  <script src="js/animation-engine.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/icon-extractor.js"></script>
+  <script src="js/library-manager.js"></script>
+  <script src="js/game-card.js"></script>
+  <script src="js/game-detail-view.js"></script>
+  <script src="js/modal-controller.js"></script>
+  <script src="js/context-menu.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+/* ─── Sidebar Navigation (Flat Dark) ─────────────────────────────────────── */
+
+.sidebar {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  height: 100%;
+  background: var(--color-surface-1);
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-sidebar);
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
+}
+
+.sidebar__nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--spacing-sm) var(--spacing-sm);
+}
+
+.sidebar__section-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  padding: 18px 14px 6px;
+}
+
+.sidebar__section-label:first-child {
+  padding-top: 10px;
+}
+
+.sidebar__btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  width: 100%;
+  text-align: left;
+  position: relative;
+  white-space: nowrap;
+}
+
+.sidebar__btn img {
+  width: 18px;
+  height: 18px;
+  opacity: 0.3;
+  transition: opacity var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.sidebar__btn:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+}
+
+.sidebar__btn:hover img {
+  opacity: 0.55;
+}
+
+.sidebar__btn--active {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.sidebar__btn--active img {
+  opacity: 0.85;
+}
+
+/* Active indicator bar */
+.sidebar__btn--active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 50%;
+  background: var(--text-primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* Add Game button */
+.sidebar__btn--accent {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-secondary);
+  margin-top: auto;
+}
+
+.sidebar__btn--accent img {
+  opacity: 0.4;
+}
+
+.sidebar__btn--accent:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.sidebar__actions {
+  padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-md);
+}
+
+.sidebar__footer {
+  padding: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar__version {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
